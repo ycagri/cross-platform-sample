@@ -5,7 +5,7 @@ using namespace http_client;
 
 TEST(HttpClientTest, GetRequestTest){
     HttpClient* req = new HttpClient();
-    std::string response = req->getRequest("login.salesforce.com", "/", "443");
+    std::string response = req->getRequest("api.github.com", "/users/ycagri", "443");
     EXPECT_NE(0, response.length());
     delete req;
 }
