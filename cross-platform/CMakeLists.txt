@@ -27,7 +27,9 @@ include_directories(
 add_executable(
   cross_platform_lib
   shared/src/http/HttpClient.cpp
+  shared/src/model/User.cpp
   shared/test/http/HttpClientTest.cc
+  shared/test/model/UserTest.cc
 )
 target_link_libraries(
   cross_platform_lib
