@@ -28,8 +28,10 @@ add_executable(
   cross_platform_lib
   shared/src/http/HttpClient.cpp
   shared/src/model/User.cpp
+  shared/src/model/Repo.cpp
   shared/test/http/HttpClientTest.cc
   shared/test/model/UserTest.cc
+  shared/test/model/RepoTest.cc
 )
 target_link_libraries(
   cross_platform_lib
