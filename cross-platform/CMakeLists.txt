@@ -27,9 +27,11 @@ include_directories(
 add_executable(
   cross_platform_lib
   shared/src/http/HttpClient.cpp
+  shared/src/http/GitHubClient.cpp
   shared/src/model/User.cpp
   shared/src/model/Repo.cpp
   shared/test/http/HttpClientTest.cc
+  shared/test/http/GitHubClientTest.cc
   shared/test/model/UserTest.cc
   shared/test/model/RepoTest.cc
 )

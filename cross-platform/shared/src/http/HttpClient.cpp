@@ -21,7 +21,7 @@ namespace net = boost::asio;
 namespace ssl = net::ssl;
 using tcp = net::ip::tcp;
 
-using namespace http_client;
+using namespace client;
 
 HttpClient::HttpClient() {
 	

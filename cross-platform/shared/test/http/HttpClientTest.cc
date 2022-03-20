@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <http/HttpClient.hpp>
 
-using namespace http_client;
+using namespace client;
 
 TEST(HttpClientTest, GetRequestTest){
     HttpClient* req = new HttpClient();
