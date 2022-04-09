@@ -16,4 +16,4 @@ jobs:
     - name: Make
       run: cmake --build cross-platform/build
     - name: Run Test
-      run: cd cross-platform/build && ctest
+      run: cd cross-platform/build && ctest --debug
