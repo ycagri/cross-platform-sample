@@ -25,7 +25,7 @@ TEST(GitHubClientTest, GetUserInfoTest){
     MockHttpClient *client = new MockHttpClient();
     GitHubClient *ghClient = new GitHubClient(client);
     
-    EXPECT_CALL(*client, getRequest("api.github.com", testing::StrEq("/users/ycagri"), "443")).WillOnce(Return(readData("../shared/test/data/api-user-ycagri.json")));
+    EXPECT_CALL(*client, getRequest(testing::StrEq("api.github.com"), testing::StrEq("/users/ycagri"), testing::StrEq("443"))).WillOnce(Return(readData("../shared/test/data/api-user-ycagri.json")));
     User user = ghClient->getUserInfo("ycagri");
     EXPECT_EQ(4305880, user.getId());
     EXPECT_STREQ("ycagri", user.getLogin().c_str());
@@ -40,7 +40,7 @@ TEST(GitHubClientTest, GetUserReposTest){
     MockHttpClient *client = new MockHttpClient();
     GitHubClient *ghClient = new GitHubClient(client);
     
-    EXPECT_CALL(*client, getRequest("api.github.com", testing::StrEq("/users/ycagri/repos"), "443")).WillOnce(Return(readData("../shared/test/data/api-repos-ycagri.json")));
+    EXPECT_CALL(*client, getRequest(testing::StrEq("api.github.com"), testing::StrEq("/users/ycagri/repos"), testing::StrEq("443"))).WillOnce(Return(readData("../shared/test/data/api-repos-ycagri.json")));
     std::vector<Repo> repos = ghClient->getUserRepos("ycagri");
     Repo repo = repos.at(0);
     EXPECT_EQ(13, repos.size());
