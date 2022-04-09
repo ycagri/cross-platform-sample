@@ -31,9 +31,12 @@ add_executable(
   shared/src/model/User.cpp
   shared/src/model/Repo.cpp
   shared/test/http/HttpClientTest.cc
+  shared/src/sqlite/sqlite3.c
+  shared/src/sqlite/SQLiteDatabaseConnector.cpp
   shared/test/http/GitHubClientTest.cc
   shared/test/model/UserTest.cc
   shared/test/model/RepoTest.cc
+  shared/test/sqlite/SQLiteDatabaseConnectorTest.cc
 )
 target_link_libraries(
   cross_platform_lib
