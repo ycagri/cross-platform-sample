@@ -34,6 +34,7 @@ add_executable(
   shared/src/sqlite/sqlite3.c
   shared/src/sqlite/SQLiteDatabaseConnector.cpp
   shared/test/http/GitHubClientTest.cc
+  shared/test/http/ResponseTest.cc
   shared/test/model/UserTest.cc
   shared/test/model/RepoTest.cc
   shared/test/sqlite/SQLiteDatabaseConnectorTest.cc
