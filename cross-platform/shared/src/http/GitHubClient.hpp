@@ -3,6 +3,7 @@
 #include "HttpClient.hpp"
 #include "model/User.hpp"
 #include "model/Repo.hpp"
+#include "Response.hpp"
 #include <string>
 #include <vector>
 
@@ -16,13 +17,14 @@ namespace client
             GitHubClient(HttpClient* client);
             ~GitHubClient();
 
-            User getUserInfo(const char* username);
-            std::vector<Repo> getUserRepos(const char* username);
+            Response<User> getUserInfo(const char* username);
+            Response<std::vector<Repo>> getUserRepos(const char* username);
 
         private:
             HttpClient *client;
 
             ptree jsonFromString(std::string input);
+            bool isSuccessful(ptree response);
     };
        
 }
