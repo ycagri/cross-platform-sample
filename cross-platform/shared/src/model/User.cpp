@@ -2,6 +2,10 @@
 
 using namespace data_model;
 
+User::User()
+{
+}
+
 User::User(const ptree *user)
 {
     this->id = user->get<long int>("id");

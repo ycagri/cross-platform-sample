@@ -3,6 +3,10 @@
 using namespace data_model;
 using boost::optional;
 
+Repo::Repo(){
+    
+}
+
 Repo::Repo(const ptree *repo)
 {
     this->id = repo->get<long int>("id");

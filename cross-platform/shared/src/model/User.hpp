@@ -18,6 +18,7 @@ namespace data_model
         int publicRepoCount;
 
     public:
+        User();
         User(const ptree *user);
         long int getId();
         std::string getLogin();

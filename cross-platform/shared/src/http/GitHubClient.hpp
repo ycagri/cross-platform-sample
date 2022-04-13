@@ -3,6 +3,7 @@
 #include "HttpClient.hpp"
 #include "model/User.hpp"
 #include "model/Repo.hpp"
+#include "Response.hpp"
 #include <string>
 #include <vector>
 
@@ -10,22 +11,31 @@ using namespace data_model;
 
 namespace client
 {
-    class GitHubClient
+
+    class GitHubHttpClient
     {
-        public:
-            GitHubClient(HttpClient* client);
-            ~GitHubClient();
-
-            User getUserInfo(const char* username);
-            std::vector<Repo> getUserRepos(const char* username);
-
-        private:
-            HttpClient *client;
-
-            ptree jsonFromString(std::string input);
+    public:
+        virtual ~GitHubHttpClient() {}
+        virtual Response<User> getUserInfo(const char *username) = 0;
+        virtual Response<std::vector<Repo> > getUserRepos(const char *username) = 0;
     };
-       
-}
 
+    class GitHubClient : public GitHubHttpClient
+    {
+    public:
+        GitHubClient(HttpClient *client);
+        ~GitHubClient();
+
+        Response<User> getUserInfo(const char *username);
+        Response<std::vector<Repo> > getUserRepos(const char *username);
+
+    private:
+        HttpClient *client;
+
+        ptree jsonFromString(std::string input);
+        bool isSuccessful(ptree response);
+    };
+
+}
 
 #endif

@@ -2,29 +2,33 @@
 #include <iostream>
 #include <sstream>
 
-SQLiteDatabaseConnector::SQLiteDatabaseConnector(const char *filename){
+SQLiteDatabaseConnector::SQLiteDatabaseConnector(const char *filename)
+{
     sqlite3_open_v2(filename, &dbConnection, SQLITE_OPEN_READWRITE, NULL);
     sqlite3_exec(this->dbConnection, "PRAGMA foreign_keys = ON;", NULL, NULL, NULL);
-    const char* usersTableQuery = "Create Table If Not Exists tbl_users(id Integer Primary Key, login Text, name Text, avatar Text, location Text, public_repo_count Integer);";
+    const char *usersTableQuery = "Create Table If Not Exists tbl_users(id Integer Primary Key, login Text, name Text, avatar Text, location Text, public_repo_count Integer);";
     sqlite3_exec(this->dbConnection, usersTableQuery, NULL, NULL, NULL);
-    const char* reposTableQuery = "Create Table If Not Exists tbl_repos(id Integer Primary Key, name Text, descirption Text, is_private Integer, is_fork Integer, language Text, watcher_count Integer, fork_count Integer, user_id Integer, Foreign Key(user_id) References tbl_users(id));";
+    const char *reposTableQuery = "Create Table If Not Exists tbl_repos(id Integer Primary Key, name Text, description Text, is_private Integer, is_fork Integer, language Text, watcher_count Integer, fork_count Integer, user_id Integer, Foreign Key(user_id) References tbl_users(id));";
     int rc = sqlite3_exec(this->dbConnection, reposTableQuery, NULL, NULL, NULL);
 }
 
-SQLiteDatabaseConnector::~SQLiteDatabaseConnector(){
+SQLiteDatabaseConnector::~SQLiteDatabaseConnector()
+{
     sqlite3_close_v2(dbConnection);
 }
 
-bool SQLiteDatabaseConnector::dropTable(const char* tableName) { 
+bool SQLiteDatabaseConnector::dropTable(const char *tableName)
+{
     std::stringstream ss;
-    ss << "Drop Table "<< tableName << ";";
+    ss << "Drop Table " << tableName << ";";
     int rc = sqlite3_exec(this->dbConnection, ss.str().c_str(), NULL, NULL, NULL);
     return rc == SQLITE_OK;
 }
 
-bool SQLiteDatabaseConnector::insertUser(User user) {
+bool SQLiteDatabaseConnector::insertUser(User user)
+{
     sqlite3_stmt *stmt;
-    const char* query = "Insert Into tbl_users(id, login, name, avatar, location, public_repo_count) Values(?,?,?,?,?,?)";
+    const char *query = "Insert Or Replace Into tbl_users(id, login, name, avatar, location, public_repo_count) Values(?,?,?,?,?,?)";
     sqlite3_prepare_v2(dbConnection, query, strlen(query), &stmt, 0);
     sqlite3_bind_int(stmt, 1, user.getId());
     sqlite3_bind_text(stmt, 2, user.getLogin().c_str(), user.getLogin().length(), NULL);
@@ -37,11 +41,13 @@ bool SQLiteDatabaseConnector::insertUser(User user) {
     return s == SQLITE_DONE;
 }
 
-bool SQLiteDatabaseConnector::insertRepos(std::vector<Repo> repos) {
+bool SQLiteDatabaseConnector::insertRepos(std::vector<Repo> repos)
+{
     sqlite3_exec(dbConnection, "BEGIN TRANSACTION;", NULL, NULL, NULL);
-    for(std::vector<Repo>::iterator it = repos.begin(); it != repos.end(); ++it){
+    for (std::vector<Repo>::iterator it = repos.begin(); it != repos.end(); ++it)
+    {
         sqlite3_stmt *stmt;
-        const char* query = "Insert Into tbl_repos(id, name, description, is_private, is_fork, langugage, watcher_count, fork_count, user_id) Values(?,?,?,?,?,?,?,?,?);";
+        const char *query = "Insert Or Replace Into tbl_repos(id, name, description, is_private, is_fork, language, watcher_count, fork_count, user_id) Values(?,?,?,?,?,?,?,?,?)";
         sqlite3_prepare_v2(dbConnection, query, strlen(query), &stmt, 0);
         sqlite3_bind_int(stmt, 1, it->getId());
         sqlite3_bind_text(stmt, 2, it->getName().c_str(), it->getName().length(), NULL);
@@ -54,7 +60,8 @@ bool SQLiteDatabaseConnector::insertRepos(std::vector<Repo> repos) {
         sqlite3_bind_int(stmt, 9, it->getUserId());
         int s = sqlite3_step(stmt);
         sqlite3_finalize(stmt);
-        if(s != SQLITE_DONE) {
+        if (s != SQLITE_DONE)
+        {
             sqlite3_exec(dbConnection, "ROLLBACK;", NULL, NULL, NULL);
             return false;
         }
