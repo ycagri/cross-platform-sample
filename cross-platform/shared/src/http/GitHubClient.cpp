@@ -28,7 +28,7 @@ Response<User> GitHubClient::getUserInfo(const char *username)
         if (message)
             return Response<User>::error(message.get().c_str());
 
-        return Response<User>::success(new User(&json));
+        return Response<User>::success(User(&json));
     }
     catch (beast::system_error e)
     {
@@ -38,7 +38,7 @@ Response<User> GitHubClient::getUserInfo(const char *username)
 
 Response<std::vector<Repo> > GitHubClient::getUserRepos(const char *username)
 {
-    std::vector<Repo> *repos = new std::vector<Repo>();
+    std::vector<Repo> repos = std::vector<Repo>();
     std::stringstream ss;
     ss << "/users/" << username << "/repos";
     try
@@ -50,7 +50,7 @@ Response<std::vector<Repo> > GitHubClient::getUserRepos(const char *username)
             return Response<std::vector<Repo> >::error(message.get().c_str());
         BOOST_FOREACH (const ptree::value_type &child, json)
         {
-            repos->push_back(Repo(&child.second));
+            repos.push_back(Repo(&child.second));
         }
         return Response<std::vector<Repo> >::success(repos);
     }

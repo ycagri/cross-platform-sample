@@ -5,22 +5,17 @@ namespace client
     class Response
     {
     public:
-        static Response<T> success(T *data)
+        static Response<T> success(T data)
         {
             return Response(data, "", true);
         }
 
         static Response<T> error(const char *message)
         {
-            return Response(nullptr, message, false);
+            return Response(message, false);
         }
 
-        ~Response()
-        {
-            delete this->data;
-        }
-
-        T *getData()
+        T getData()
         {
             return this->data;
         }
@@ -36,14 +31,20 @@ namespace client
         }
 
     private:
-        Response(T *data, const char *message, bool successful)
+        Response(const char *message, bool successful) : data()
+        {
+            this->message = std::string(message);
+            this->successful = successful;
+        }
+
+        Response(T data, const char *message, bool successful)
         {
             this->data = data;
             this->message = std::string(message);
             this->successful = successful;
         }
 
-        T *data;
+        T data;
         std::string message;
         bool successful;
     };

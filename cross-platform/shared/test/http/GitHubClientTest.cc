@@ -37,12 +37,12 @@ TEST(GitHubClientTest, GetUserInfoTest)
     EXPECT_CALL(*client, getRequest(testing::StrEq("api.github.com"), testing::StrEq("/users/ycagri"), testing::StrEq("443"))).WillOnce(Return(readData("../shared/test/data/api-user-ycagri.json")));
     Response<User> user = ghClient->getUserInfo("ycagri");
     EXPECT_TRUE(user.isSuccessful());
-    EXPECT_EQ(4305880, user.getData()->getId());
-    EXPECT_STREQ("ycagri", user.getData()->getLogin().c_str());
-    EXPECT_STREQ("Yigit Cagri Akkaya", user.getData()->getName().c_str());
-    EXPECT_STREQ("https://avatars.githubusercontent.com/u/4305880?v=4", user.getData()->getAvatar().c_str());
-    EXPECT_STREQ("Ankara", user.getData()->getLocation().c_str());
-    EXPECT_EQ(13, user.getData()->getPublicRepoCount());
+    EXPECT_EQ(4305880, user.getData().getId());
+    EXPECT_STREQ("ycagri", user.getData().getLogin().c_str());
+    EXPECT_STREQ("Yigit Cagri Akkaya", user.getData().getName().c_str());
+    EXPECT_STREQ("https://avatars.githubusercontent.com/u/4305880?v=4", user.getData().getAvatar().c_str());
+    EXPECT_STREQ("Ankara", user.getData().getLocation().c_str());
+    EXPECT_EQ(13, user.getData().getPublicRepoCount());
     delete ghClient;
 }
 
@@ -76,8 +76,8 @@ TEST(GitHubClientTest, GetUserReposTest)
     GitHubClient *ghClient = new GitHubClient(client);
     EXPECT_CALL(*client, getRequest(testing::StrEq("api.github.com"), testing::StrEq("/users/ycagri/repos"), testing::StrEq("443"))).WillOnce(Return(readData("../shared/test/data/api-repos-ycagri.json")));
     Response<std::vector<Repo> > repos = ghClient->getUserRepos("ycagri");
-    Repo repo = repos.getData()->at(0);
-    EXPECT_EQ(13, repos.getData()->size());
+    Repo repo = repos.getData().at(0);
+    EXPECT_EQ(13, repos.getData().size());
     EXPECT_EQ(341657976, repo.getId());
     EXPECT_STREQ("bluetooth-messenger", repo.getName().c_str());
     EXPECT_STREQ("Yet another bluetooth messenger for Android devices", repo.getDescription().c_str());

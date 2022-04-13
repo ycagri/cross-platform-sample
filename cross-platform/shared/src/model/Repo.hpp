@@ -11,6 +11,7 @@ namespace data_model
     class Repo
     {
     public:
+        Repo();
         Repo(const ptree *repo);
         ~Repo();
 
