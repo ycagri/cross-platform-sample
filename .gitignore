@@ -1,2 +1,4 @@
 cross-platform/build
 .vscode/
+cross-platform/android/libs
+cross-platform/android/obj
