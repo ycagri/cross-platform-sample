@@ -7,13 +7,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-      steps:
-      - uses: actions/checkout@v2
-      - uses: nttld/setup-ndk@v1
-        with:
-        ndk-version: r21e
-      - run: cd ./cross-platform/android/jni && ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk
-      - uses: actions/upload-artifact@v2
-        with:
-          name: android-lib-artifact
-          path: cross-platform/android/jni/libs
+    steps:
+    - uses: actions/checkout@v2
+    - uses: nttld/setup-ndk@v1
+      with:
+      ndk-version: r21e
+    - run: cd ./cross-platform/android/jni && ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk
+    - uses: actions/upload-artifact@v2
+      with:
+        name: android-lib-artifact
+        path: cross-platform/android/jni/libs
