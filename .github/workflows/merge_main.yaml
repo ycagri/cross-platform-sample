@@ -2,10 +2,10 @@ name: Gennerate Library Files
 
 on:
   push:
-    branches: [ main ]
+    branches: [ feature/ios-lib ]
 
 jobs:
-  build:
+  android:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -17,3 +17,12 @@ jobs:
       with:
         name: android-lib-artifact
         path: cross-platform/android/jni/libs
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd ./cross-platform/ios/ios-lib && xcodebuild -scheme ios-lib -archivePath Build/Archive
+      - uses: actions/upload-artifact@v2
+        with:
+          name: android-lib-artifact
+          path: cross-platform/ios/ios-lib/build/Release-iphoneos
