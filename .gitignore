@@ -2,3 +2,6 @@ cross-platform/build
 .vscode/
 cross-platform/android/libs
 cross-platform/android/obj
+cross-platform/ios/ios-lib/ios-lib.xcodeproj/xcuserdata
+cross-platform/ios/ios-lib/ios-lib.xcodeproj/project.xcworkspace
+cross-platform/ios/ios-lib/build/
