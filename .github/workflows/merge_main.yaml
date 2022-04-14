@@ -2,7 +2,7 @@ name: Gennerate Library Files
 
 on:
   push:
-    branches: [ feature/android-lib ]
+    branches: [ main ]
 
 jobs:
   build:
