@@ -10,6 +10,7 @@ namespace context
     class Context
     {
         public:
+            virtual ~Context() { }
             virtual std::string addUser(const char* username) = 0;
             virtual std::string getUserRepos(const char* username) = 0;
     };
