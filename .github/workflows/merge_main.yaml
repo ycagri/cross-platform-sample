@@ -1,0 +1,41 @@
+name: Gennerate Library Files
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: nttld/setup-ndk@v1
+      with:
+        ndk-version: r21e
+    - run: cd ./cross-platform/android/jni && ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk
+    - uses: actions/upload-artifact@v2
+      with:
+        name: android-lib-artifact
+        path: cross-platform/android/jni/libs
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd ./cross-platform/ios/ios-lib && xcodebuild -scheme ios-lib CONFIGURATION_BUILD_DIR=build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ios-lib-artifact
+          path: cross-platform/ios/ios-lib/build
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd ./cross-platform/boost_1_78_0 && .\bootstrap.bat && .\b2.exe
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+      - name: Create NuGet Package
+        run: cd ./cross-platform/windows/windows-lib && msbuild.exe windows-lib.sln /t:Restore /p:RestorePackagesConfig=true && msbuild.exe windows-lib.sln /t:Clean,Build /p:Configuration=Release /p:Platform=x64
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows-lib-artifact
+          path: cross-platform/windows/windows-lib/windows-lib-packaging/nuget/*.nupkg
