@@ -2,7 +2,7 @@ name: Gennerate Library Files
 
 on:
   push:
-    branches: [ feature/windows-lib ]
+    branches: [ main ]
 
 jobs:
   android:
