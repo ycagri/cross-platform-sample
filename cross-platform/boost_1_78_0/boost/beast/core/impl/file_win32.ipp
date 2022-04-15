@@ -190,7 +190,7 @@ open(char const* path, file_mode mode, error_code& ec)
     detail::win32_unicode_path unicode_path(path, ec);
     if (ec)
         return;
-    h_ = ::CreateFileW(
+    /*h_ = ::CreateFileW(
         unicode_path.c_str(),
         desired_access,
         share_mode,
@@ -202,7 +202,7 @@ open(char const* path, file_mode mode, error_code& ec)
         ec.assign(boost::winapi::GetLastError(),
             system_category());
     else
-        ec = {};
+        ec = {};*/
 }
 
 std::uint64_t
