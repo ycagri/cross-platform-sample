@@ -5,3 +5,10 @@ cross-platform/android/obj
 cross-platform/ios/ios-lib/ios-lib.xcodeproj/xcuserdata
 cross-platform/ios/ios-lib/ios-lib.xcodeproj/project.xcworkspace
 cross-platform/ios/ios-lib/build/
+cross-platform/windows/windows-lib/.vs
+cross-platform/windows/windows-lib/windows-lib/Generated Files
+cross-platform/windows/windows-lib/x64
+cross-platform/windows/windows-lib/build
+cross-platform/windows/windows-lib/Debug
+cross-platform/windows/windows-lib/Release
+cross-platform/windows/windows-lib/windows-lib-packaging/obj
