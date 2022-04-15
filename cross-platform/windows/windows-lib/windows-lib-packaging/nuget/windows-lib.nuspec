@@ -14,9 +14,9 @@
     <!--Note: This sample assumes the configuration/platform are set to Release/x64-->
     <!--Projection assembly is architecture-neutral-->
     <file src="..\..\build\x64\Release\windows-lib\bin\windows-lib\windows-lib.dll" target="lib\net5.0-windows10.0.19041.0\WindowsImpactLibProjection.dll" />
-    <file src="C:\Program Files (x86)\Microsoft SDKs\UAP\v0.8.0.0\ExtensionSDKs\SQLite.UWP.2015\3.38.0\Redist\Retail\x64\sqlite3.dll" target="lib\net5.0-windows10.0.19041.0\sqlite3.dll"/>
+    <file src="..\..\..\sqlite\sqlite3.dll" target="lib\net5.0-windows10.0.19041.0\sqlite3.dll"/>
     <!--Arch-specific implementation DLLs should be copied into RID-relative folders -->
     <file src="..\..\build\x64\Release\windows-lib\bin\windows-lib\windows-lib.dll" target="runtimes\win10-x64\native\windows-lib.dll" />
-    <file src="C:\Program Files (x86)\Microsoft SDKs\UAP\v0.8.0.0\ExtensionSDKs\SQLite.UWP.2015\3.38.0\Redist\Retail\x64\sqlite3.dll" target="runtimes\win10-x64\native\sqlite3.dll"/>
+    <file src="..\..\..\sqlite\sqlite3.dll" target="runtimes\win10-x64\native\sqlite3.dll"/>
   </files>
 </package>
