@@ -34,7 +34,7 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
       - name: Create NuGet Package
-        run: cd ./cross-platform/windows/windows-lib && msbuild.exe windows-lib.sln /t:Clean,Build /p:Configuration=Release /p:Platform=x64
+        run: cd ./cross-platform/windows/windows-lib && msbuild.exe windows-lib.sln /t:Restore /p:RestorePackagesConfig=true && msbuild.exe windows-lib.sln /t:Clean,Build /p:Configuration=Release /p:Platform=x64
       - uses: actions/upload-artifact@v2
         with:
           name: windows-lib-artifact
