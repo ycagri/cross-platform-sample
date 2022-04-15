@@ -31,6 +31,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: cd ./cross-platform/boost_1_78_0 && .\bootstrap.bat && .\b2.exe
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+      - name: Create NuGet Package
       - run: cd ./cross-platform/windows/windows-lib && msbuild.exe windows-lib.sln /t:Clean,Build /p:Configuration=Release /p:Platform=x64
       - uses: actions/upload-artifact@v2
         with:
