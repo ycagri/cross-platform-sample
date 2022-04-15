@@ -12,3 +12,4 @@ cross-platform/windows/windows-lib/build
 cross-platform/windows/windows-lib/Debug
 cross-platform/windows/windows-lib/Release
 cross-platform/windows/windows-lib/windows-lib-packaging/obj
+cross-platform/windows/windows-lib/windows-lib-packaging/nuget/*.nupkg
