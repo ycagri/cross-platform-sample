@@ -1,0 +1,10 @@
+namespace windows_lib
+{
+    [default_interface]
+    runtimeclass LibBridge
+    {
+        LibBridge();
+        String AddUser(String dbPath, String username);
+        String GetUserRepos(String dbPath, String username);
+    }
+}
