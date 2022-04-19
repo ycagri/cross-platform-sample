@@ -23,8 +23,7 @@ Response<User> GitHubClient::getUserInfo(const char *username)
     ss << "/users/" << username;
     try
     {
-        std::map<std::string, std::string> headers =  boost::assign::map_list_of ("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36'");
-        std::string response = this->client->getRequest("api.github.com", ss.str().c_str(), "443", headers);
+        std::string response = this->client->getRequest("api.github.com", ss.str().c_str(), "443");
         ptree json = this->jsonFromString(response);
         boost::optional<std::string> message = json.get_optional<std::string>("message");
         if (message)

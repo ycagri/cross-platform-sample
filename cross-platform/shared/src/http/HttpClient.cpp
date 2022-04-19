@@ -35,6 +35,8 @@ std::string HttpClient::getRequest(const char* host, const char* path, const cha
 	beast::ssl_stream<beast::tcp_stream> stream = this->createStream(host, port);
 	http::request<http::string_body> req{http::verb::get, path, 11};
 	req.set(http::field::host, host);
+	req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+
 	http::write(stream, req);
 
 	beast::flat_buffer buffer;
@@ -43,7 +45,7 @@ std::string HttpClient::getRequest(const char* host, const char* path, const cha
 
 	beast::error_code ec;
 	stream.shutdown(ec);
-	if(ec && ec != beast::errc::not_connected)
+	if(ec && ec != boost::asio::ssl::error::stream_truncated)
 		throw beast::system_error{ec};
  
 	return boost::beast::buffers_to_string(res.body().data());
@@ -54,6 +56,7 @@ std::string HttpClient::getRequest(const char* host, const char* path, const cha
 	beast::ssl_stream<beast::tcp_stream> stream = this->createStream(host, port);
 	http::request<http::string_body> req{http::verb::get, path, 11};
 	req.set(http::field::host, host);
+	req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
 	std::map<std::string, std::string>::iterator it = headerMap.begin();
 	while (it != headerMap.end()) {
 		req.set(it->first, it->second);
@@ -66,8 +69,8 @@ std::string HttpClient::getRequest(const char* host, const char* path, const cha
 	http::read(stream, buffer, res);
 
 	beast::error_code ec;
-	//stream.shutdown(ec);
-	if(ec && ec != beast::errc::not_connected)
+	stream.shutdown(ec);
+	if(ec && ec != boost::asio::ssl::error::stream_truncated)
 		throw beast::system_error{ec};
  
 	return boost::beast::buffers_to_string(res.body().data());
@@ -78,6 +81,7 @@ std::string HttpClient::postRequest(const char* host, const char* path, const ch
 	http::request<http::string_body> req{http::verb::post, path, 11};
 	req.set(http::field::host, host);
 	req.set(http::field::content_type, contentType);
+	req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
 	req.body() = body;
 	req.prepare_payload();
 	http::write(stream, req);
@@ -87,8 +91,8 @@ std::string HttpClient::postRequest(const char* host, const char* path, const ch
 	http::read(stream, buffer, res);
 
 	beast::error_code ec;
-	stream.shutdown(ec);
-	if(ec && ec != beast::errc::not_connected)
+	stream.shutdown();
+	if(ec && ec != boost::asio::ssl::error::stream_truncated)
 		throw beast::system_error{ec};
  
 	return boost::beast::buffers_to_string(res.body().data());
@@ -97,13 +101,19 @@ std::string HttpClient::postRequest(const char* host, const char* path, const ch
 beast::ssl_stream<beast::tcp_stream> HttpClient::createStream(const char* host, const char* port) {
 	net::io_context ioc;
     ssl::context ctx(ssl::context::tlsv12_client);
-    ctx.set_verify_mode(ssl::verify_none);
+	ctx.set_default_verify_paths();
+    ctx.set_verify_mode(ssl::verify_peer);
 
 	tcp::resolver resolver(ioc);
 	beast::ssl_stream<beast::tcp_stream> stream(ioc, ctx);
+	if(! SSL_set_tlsext_host_name(stream.native_handle(), host))
+	{
+		beast::error_code ec{static_cast<int>(::ERR_get_error()), net::error::get_ssl_category()};
+		throw beast::system_error{ec};
+	}
+
 	auto const results = resolver.resolve(host, port);
 	beast::get_lowest_layer(stream).connect(results);
 	stream.handshake(ssl::stream_base::client);
 	return stream;
 }
-
