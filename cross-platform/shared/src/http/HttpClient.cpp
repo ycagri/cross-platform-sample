@@ -66,7 +66,7 @@ std::string HttpClient::getRequest(const char* host, const char* path, const cha
 	http::read(stream, buffer, res);
 
 	beast::error_code ec;
-	stream.shutdown(ec);
+	//stream.shutdown(ec);
 	if(ec && ec != beast::errc::not_connected)
 		throw beast::system_error{ec};
  
