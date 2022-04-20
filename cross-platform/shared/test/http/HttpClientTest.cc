@@ -1,13 +1,18 @@
 #include <gtest/gtest.h>
 #include <http/HttpClient.hpp>
-#include "boost/assign.hpp"
 
 using namespace client;
 
-TEST(HttpClientTest, GetRequestTest){
+TEST(HttpClientTest, GetUserRequestTest){
     HttpClient* req = new HttpClient();
     std::string response = req->getRequest("api.github.com", "/users/ycagri", "443");
-    std::cout << response << std::endl;
-    EXPECT_NE(0, response.length());
+    EXPECT_TRUE(response.rfind("{\"login\":\"ycagri\"") == 0);
+    delete req;
+}
+
+TEST(HttpClientTest, GetReposRequestTest){
+    HttpClient* req = new HttpClient();
+    std::string response = req->getRequest("api.github.com", "/users/ycagri/repos", "443");
+    EXPECT_TRUE(response.rfind("[{\"id\":341657976,") == 0);
     delete req;
 }
