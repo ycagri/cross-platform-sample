@@ -1,4 +1,4 @@
-namespace windows_lib
+namespace lib
 {
     [default_interface]
     runtimeclass LibBridge
