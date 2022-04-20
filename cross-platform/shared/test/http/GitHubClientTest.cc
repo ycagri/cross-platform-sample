@@ -12,7 +12,6 @@ class MockHttpClient : public HttpClient
 {
 public:
     MOCK_METHOD(std::string, getRequest, (const char *host, const char *path, const char *port), (override));
-    MOCK_METHOD(std::string, getRequest, (const char *host, const char *path, const char *port, (const std::map<std::string, std::string> headerMap)), (override));
 };
 
 ACTION(NotConnectedException)
@@ -35,7 +34,7 @@ TEST(GitHubClientTest, GetUserInfoTest)
     MockHttpClient *client = new MockHttpClient();
     GitHubClient *ghClient = new GitHubClient(client);
 
-    EXPECT_CALL(*client, getRequest(testing::StrEq("api.github.com"), testing::StrEq("/users/ycagri"), testing::StrEq("443"), testing::_)).WillOnce(Return(readData("../shared/test/data/api-user-ycagri.json")));
+    EXPECT_CALL(*client, getRequest(testing::StrEq("api.github.com"), testing::StrEq("/users/ycagri"), testing::StrEq("443"))).WillOnce(Return(readData("../shared/test/data/api-user-ycagri.json")));
     Response<User> user = ghClient->getUserInfo("ycagri");
     EXPECT_TRUE(user.isSuccessful());
     EXPECT_EQ(4305880, user.getData().getId());
@@ -51,7 +50,7 @@ TEST(GitHubClientTest, GetUserNotExistTest)
 {
     MockHttpClient *client = new MockHttpClient();
     GitHubClient *ghClient = new GitHubClient(client);
-    EXPECT_CALL(*client, getRequest(testing::StrEq("api.github.com"), testing::StrEq("/users/random_user_name"), testing::StrEq("443"), testing::_)).WillOnce(Return(readData("../shared/test/data/api-user-not-exist.json")));
+    EXPECT_CALL(*client, getRequest(testing::StrEq("api.github.com"), testing::StrEq("/users/random_user_name"), testing::StrEq("443"))).WillOnce(Return(readData("../shared/test/data/api-user-not-exist.json")));
     Response<User> user = ghClient->getUserInfo("random_user_name");
     EXPECT_FALSE(user.isSuccessful());
     EXPECT_STREQ("Not Found", user.getError().c_str());
@@ -64,7 +63,7 @@ TEST(GitHubClientTest, GetUserExceptionTest)
     GitHubClient *ghClient = new GitHubClient(client);
     boost::system::error_code err = make_error_code(beast::errc::not_connected);
     beast::system_error e = beast::system_error{err};
-    EXPECT_CALL(*client, getRequest(testing::StrEq("api.github.com"), testing::StrEq("/users/ycagri"), testing::StrEq("443"), testing::_)).WillRepeatedly(NotConnectedException());
+    EXPECT_CALL(*client, getRequest(testing::StrEq("api.github.com"), testing::StrEq("/users/ycagri"), testing::StrEq("443"))).WillRepeatedly(NotConnectedException());
     Response<User> user = ghClient->getUserInfo("ycagri");
     EXPECT_FALSE(user.isSuccessful());
     EXPECT_STREQ(e.what(), user.getError().c_str());
