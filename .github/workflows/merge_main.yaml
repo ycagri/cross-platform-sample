@@ -30,7 +30,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - run: cd ./cross-platform/boost_1_78_0 && .\bootstrap.bat --toolset=msvc-14.2 && .\b2.exe
+      - run: cd ./cross-platform/boost_1_78_0 && .\bootstrap.bat && .\b2.exe --toolset=msvc-14.2
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
       - name: Create Windows Library
