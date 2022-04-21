@@ -18,9 +18,6 @@ namespace client {
 			virtual std::string getRequest(const char* host, const char* path, const char* port);
 			virtual std::string getRequest(const char* host, const char* path, const char* port, const std::map<std::string, std::string> headerMap);
 			virtual std::string postRequest(const char* host, const char* path, const char* port,const char* contentType, const char* body);
-
-		private:
-			beast::ssl_stream<beast::tcp_stream> createStream(const char* host, const char* port);
 	};
 }
 #endif

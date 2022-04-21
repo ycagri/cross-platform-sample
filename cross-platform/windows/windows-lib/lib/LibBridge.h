@@ -2,7 +2,7 @@
 
 #include "LibBridge.g.h"
 
-namespace winrt::windows_lib::implementation
+namespace winrt::lib::implementation
 {
     struct LibBridge : LibBridgeT<LibBridge>
     {
@@ -13,7 +13,7 @@ namespace winrt::windows_lib::implementation
     };
 }
 
-namespace winrt::windows_lib::factory_implementation
+namespace winrt::lib::factory_implementation
 {
     struct LibBridge : LibBridgeT<LibBridge, implementation::LibBridge>
     {

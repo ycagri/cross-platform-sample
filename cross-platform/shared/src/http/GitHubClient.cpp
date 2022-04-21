@@ -2,6 +2,7 @@
 #include <sstream>
 #include <boost/iostreams/stream.hpp>
 #include "boost/foreach.hpp"
+#include "boost/assign.hpp"
 
 using namespace client;
 using namespace data_model;

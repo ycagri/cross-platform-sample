@@ -1,11 +1,16 @@
 ﻿#include "LibBridge.h"
+#if __has_include("LibBridge.g.cpp")
 #include "LibBridge.g.cpp"
+#endif
 #include "http/HttpClient.hpp"
 #include "http/GitHubClient.hpp"
 #include "sqlite/SQLiteDatabaseConnector.hpp"
 #include "GitHubContext.hpp"
 
-namespace winrt::windows_lib::implementation
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+namespace winrt::lib::implementation
 {
     winrt::hstring LibBridge::AddUser(const::winrt::hstring dbPath, const::winrt::hstring username)
     {
